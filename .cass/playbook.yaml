@@ -1,0 +1,35 @@
+# Project-specific playbook rules
+# These are merged with your global ~/.cass-memory/playbook.yaml
+# Project rules take precedence over global rules
+schema_version: 2
+name: repo-playbook
+description: Project-specific rules for this repository
+metadata:
+  createdAt: 2026-01-26T17:17:15.002Z
+  totalReflections: 0
+  totalSessionsProcessed: 0
+deprecatedPatterns: []
+bullets:
+  - id: b-mavffg6v-l0vc1g
+    scope: workspace
+    category: workflow
+    content: "For team-shared CASS memory, run cm init --repo and commit .cass/playbook.yaml + .cass/blocked.log (unignore blocked.log in .gitignore)."
+    source: learned
+    type: rule
+    isNegative: false
+    kind: workflow_rule
+    state: draft
+    maturity: candidate
+    helpfulCount: 0
+    harmfulCount: 0
+    feedbackEvents: []
+    confidenceDecayHalfLifeDays: 90
+    createdAt: 2026-01-26T17:20:05.639Z
+    updatedAt: 2026-01-26T17:20:05.639Z
+    pinned: false
+    deprecated: false
+    sourceSessions:
+      - manual-cli
+    sourceAgents:
+      - unknown
+    tags: []
