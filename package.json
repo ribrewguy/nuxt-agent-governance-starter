@@ -1,0 +1,45 @@
+{
+  "name": "nuxt-agent-governance-starter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "e2e": "playwright test",
+    "prepare": "husky install",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "typecheck": "nuxt typecheck",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@iconify-json/lucide": "^1.2.87",
+    "@iconify-json/simple-icons": "^1.2.68",
+    "@nuxt/ui": "^4.4.0",
+    "@tanstack/vue-query": "^5.92.9",
+    "@unovis/ts": "^1.6.2",
+    "@unovis/vue": "^1.6.2",
+    "@vueuse/core": "^14.1.0",
+    "@vueuse/nuxt": "^14.1.0",
+    "nuxt": "^4.3.0",
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.13.0",
+    "@nuxt/test-utils": "^3.23.0",
+    "@nuxtjs/i18n": "^10.2.1",
+    "@playwright/test": "^1.58.0",
+    "@vue/test-utils": "^2.4.6",
+    "dotenv": "^17.2.3",
+    "eslint": "^9.39.2",
+    "h3": "^1.15.5",
+    "happy-dom": "^20.4.0",
+    "husky": "^9.1.7",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4",
+    "vue-tsc": "^3.2.4"
+  },
+  "packageManager": "pnpm@10.26.1"
+}

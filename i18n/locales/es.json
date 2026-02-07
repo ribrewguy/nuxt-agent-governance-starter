@@ -1,0 +1,15 @@
+{
+  "global": {
+    "app-company-name": "{'@'}ribrewguy",
+    "app-name": "Gobernanza del agente Nuxt",
+    "app-name-short": "NAG",
+    "app-description": "Demo para ayudarte a explorar la gobernanza de agentes."
+  },
+  "errors": {
+    "page-not-found-title": "Página no encontrada",
+    "page-not-found-description": "Lo sentimos, pero esta página no se pudo encontrar."
+  },
+  "index": {
+    "title": "Casa"
+  }
+}

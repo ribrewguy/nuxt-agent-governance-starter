@@ -1,0 +1,3 @@
+pnpm exec eslint .
+pnpm typecheck
+pnpm test:unit

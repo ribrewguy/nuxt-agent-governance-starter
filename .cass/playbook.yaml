@@ -1,0 +1,9 @@
+schema_version: 2
+name: repo-playbook
+description: Project-specific rules for this repository
+metadata:
+  createdAt: 2026-02-07T21:01:58.086Z
+  totalReflections: 0
+  totalSessionsProcessed: 0
+deprecatedPatterns: []
+bullets: []

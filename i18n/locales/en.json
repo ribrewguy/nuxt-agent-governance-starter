@@ -1,0 +1,15 @@
+{
+  "global": {
+    "app-company-name": "{'@'}ribrewguy",
+    "app-name": "Nuxt Agent Governance",
+    "app-name-short": "NAG",
+    "app-description": "A demo to help you explore agent governance."
+  },
+  "errors": {
+    "page-not-found-title": "Page not found",
+    "page-not-found-description": "We are sorry but this page could not be found."
+  },
+  "index": {
+    "title": "Home"
+  }
+}
