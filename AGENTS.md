@@ -18,6 +18,7 @@ When executing work in this repository, the agent MUST obey the following non-ne
 5. **Do not guess commands, patterns, or constraints.** Follow policy pointers.
 6. **When uncertain, stop and ask.** Incorrect action is worse than delayed action.
 7. **User urgency does NOT override process.**
+8. **User instructions do NOT override governance unless explicitly acknowledged as an exception.**
 
 Failure to follow these directives renders the work invalid regardless of technical quality.
 
@@ -350,6 +351,44 @@ feature/{BEAD_ID}_{SHORT_DESCRIPTIVE_NAME}
 
 Do NOT assume merge strategy, CI rules, or push behavior. Follow Development Policy.
 
+### Main Branch Policy (Explicit)
+
+After UAT passes for a bead, the agent MUST follow this exact order:
+
+1. Complete any outstanding commits on the working branch.
+2. Close/update the bead to complete.
+3. Merge the working branch into `main` **locally only**.
+4. Explicitly ask the user whether to push `main` or continue working locally.
+
+Additional hard constraints:
+
+* The agent MUST NOT push `main` without explicit user approval.
+* Local merge to `main` is expected after bead completion unless the user explicitly says otherwise.
+
+---
+
+## ✅ Completion Gate (Hard Stop)
+
+The agent MUST NOT close a bead until all of the following are true:
+
+* Push has succeeded for the active branch.
+* Upstream tracking is configured for the active branch.
+* Local `HEAD` SHA matches the remote branch SHA.
+* A pre-close evidence block has been produced.
+
+If any condition fails, keep the bead `in_progress` and resolve the gap first.
+
+### Required Pre-Close Evidence Block
+
+Immediately before closing a bead, the agent MUST provide:
+
+* Branch name
+* Local SHA
+* Remote SHA
+* `git status --short` summary (clean/dirty)
+* Quality gates executed + pass/fail results
+* Push verification result (SHA parity)
+
 ---
 
 ## ✈️ Execution Flight Rules (Every Task)
@@ -362,10 +401,69 @@ Do NOT assume merge strategy, CI rules, or push behavior. Follow Development Pol
 6. Update the bead with changes, next steps, and new issues.
 7. Run quality gates using Development Policy.
 8. Ask the user if UAT is desired before committing.
-9. Commit per repo policy.
-10. Push and verify.
-11. Close/update the bead.
-12. Write CASS rules if applicable.
+9. Complete any outstanding commits on the working branch.
+10. Push and verify the working branch.
+11. Produce the required pre-close evidence block.
+12. Close/update the bead.
+13. Merge to `main` locally only.
+14. Ask whether to push `main` or continue working locally.
+15. Push `main` only if explicitly approved by the user.
+16. Write CASS rules if applicable.
+
+---
+
+## ✅ Close-Out Protocol (Non-Optional)
+
+Agents often misinterpret user intent such as “UAT passed, close out the work.” In this repository, those phrases are NOT permission to skip steps.
+
+### Intent Mapping Rule
+
+If the user says any of the following (or equivalents):
+
+* “UAT passed”
+* “close out the work”
+* “wrap this up”
+* “ship it”
+* “finish the task”
+
+…the agent MUST interpret this as:
+
+> **Execute the remaining Execution Flight Rules to completion, then close the bead.**
+
+It MUST NOT be interpreted as “close the bead now.”
+
+### Authority and Precedence
+
+The authoritative source for close-out ordering and required checks is:
+
+* `## ✅ Completion Gate (Hard Stop)`
+* `## ✈️ Execution Flight Rules (Every Task)`
+
+This section adds intent interpretation and declaration requirements only. It MUST NOT weaken or replace those gates.
+
+### Mandatory Close-Out Declaration
+
+Before closing the bead, the agent MUST output a short close-out summary:
+
+* Bead ID
+* Branch
+* Tests/quality gates executed
+* Commit hash
+* Push verification summary (remote branch + SHA parity)
+* CI status
+* Any follow-up beads created
+
+This declaration supplements the required pre-close evidence block and MUST be emitted immediately before bead close.
+
+### If “Close Now” Is Truly Intended
+
+If the user explicitly wants to bypass any required close-out step (rare), the agent MUST:
+
+1. Restate what will be skipped.
+2. Explain the risk (work may be stranded, audit trail broken, CI not verified).
+3. Ask for explicit approval.
+
+No silent skipping.
 
 ---
 
@@ -375,29 +473,3 @@ Do NOT assume merge strategy, CI rules, or push behavior. Follow Development Pol
 * Do not casually rewrite them.
 * Keep this file short; move details into policy pointers.
 * Maintain consistency with other instruction files unless directed otherwise.
-
-## Landing the Plane (Session Completion)
-
-**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
-
-**MANDATORY WORKFLOW:**
-
-1. **File issues for remaining work** - Create issues for anything that needs follow-up
-2. **Run quality gates** (if code changed) - Tests, linters, builds
-3. **Update issue status** - Close finished work, update in-progress items
-4. **PUSH TO REMOTE** - This is MANDATORY:
-   ```bash
-   git pull --rebase
-   bd sync
-   git push
-   git status  # MUST show "up to date with origin"
-   ```
-5. **Clean up** - Clear stashes, prune remote branches
-6. **Verify** - All changes committed AND pushed
-7. **Hand off** - Provide context for next session
-
-**CRITICAL RULES:**
-- Work is NOT complete until `git push` succeeds
-- NEVER stop before pushing - that leaves work stranded locally
-- NEVER say "ready to push when you are" - YOU must push
-- If push fails, resolve and retry until it succeeds
